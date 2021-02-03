@@ -1,5 +1,7 @@
 import pygame
+from pygame.transform import rotate
 from pygame.sprite import Sprite
+from pygame.math import Vector2
 
 SIZE = (320, 240)
 WHITE = (255, 255, 255)
@@ -15,20 +17,24 @@ class Ant(Sprite):
         self.surface = pygame.image.load("ant_worker.png")
         self.rect = self.surface.get_rect()
         self.rect.inflate(*size)
+        self.vector = Vector2(speed)
 
-        self.speed = list(speed)
+    @property
+    def direction(self):
+        return self.vector.normalize()
 
     def update(self):
-        ant.rect.move_ip(self.speed)
+        ant.rect.move_ip(self.vector)
 
         if ant.rect.left < 0 or ant.rect.right > SIZE[0]:
-            self.speed[0] = -self.speed[0]
+            self.vector = self.vector.reflect((1, 0))
 
         if ant.rect.top < 0 or ant.rect.bottom > SIZE[1]:
-            self.speed[1] = -self.speed[1]
+            self.vector = self.vector.reflect((0, 1))
 
     def draw(self, surface):
-        surface.blit(self.surface, self.rect)
+        angle = self.vector.angle_to(Vector2(0, -1))
+        surface.blit(rotate(self.surface, angle), self.rect)
 
 
 if __name__ == '__main__':
