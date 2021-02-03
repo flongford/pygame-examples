@@ -1,9 +1,12 @@
 import pygame
 from pygame.transform import rotate
-from pygame.sprite import Sprite
+from pygame.sprite import Sprite, Group
 from pygame.math import Vector2
 import pygame_gui
 from pygame_gui.elements import UIButton
+
+# Here we need to call init to load font text for the buttons
+pygame.init()
 
 SCREEN_SIZE = (300, 400)
 MAP_SIZE = (300, 320)
@@ -16,11 +19,11 @@ class Ant(Sprite):
 
     def __init__(self, size=(25, 25), speed=(2, 2)):
         # Call the parent class (Sprite) constructor
-        pygame.sprite.Sprite.__init__(self)
+        super(Ant, self).__init__()
 
         # Load an image of the ant
-        self.surface = pygame.image.load("ant_worker.png")
-        self.rect = self.surface.get_rect()
+        self.image = pygame.image.load("ant_worker.png")
+        self.rect = self.image.get_rect()
         self.rect.inflate(*size)
         self.vector = Vector2(speed)
 
@@ -48,13 +51,10 @@ class Ant(Sprite):
 
     def draw(self, surface):
         angle = self.vector.angle_to(Vector2(0, -1))
-        surface.blit(rotate(self.surface, angle), self.rect)
+        surface.blit(rotate(self.image, angle), self.rect)
 
 
 if __name__ == '__main__':
-
-    # Here we need to call init to load font text for the buttons
-    pygame.init()
 
     # Creates a graphical window, based on system hardware
     # settings
@@ -82,6 +82,8 @@ if __name__ == '__main__':
 
     ant = Ant()
 
+    colony = Group(ant)
+
     clock = pygame.time.Clock()
     running = True
 
@@ -106,9 +108,9 @@ if __name__ == '__main__':
 
         manager.update(time_delta)
 
-        ant.update()
+        colony.update()
 
         screen.fill(WHITE)
-        ant.draw(screen)
+        colony.draw(screen)
         manager.draw_ui(screen)
         pygame.display.update()

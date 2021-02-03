@@ -2,19 +2,21 @@ import pygame
 
 
 # NOTE: this appears in many code examples but actually just
-#  performs a load of module imports so is optional
-# pygame.init()
+#  performs a load of module imports so is optional in many
+#  situations
+pygame.init()
 
-size = width, height = 320, 240
-speed = [2, 2]
-black = (0, 0, 0)
+SIZE = width, height = (320, 240)
+BLACK = (0, 0, 0)
 
 
 if __name__ == '__main__':
 
     # Creates a graphical window, based on system hardware
     # settings
-    screen = pygame.display.set_mode(size)
+    screen = pygame.display.set_mode(SIZE)
+
+    speed = [2, 2]
 
     ball = pygame.image.load("intro_ball.gif")
 
@@ -28,6 +30,8 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT:
                 running = False
 
+        ball_rect = ball.get_rect()
+
         ball_rect = ball_rect.move(speed)
 
         if ball_rect.left < 0 or ball_rect.right > width:
@@ -36,6 +40,6 @@ if __name__ == '__main__':
         if ball_rect.top < 0 or ball_rect.bottom > height:
             speed[1] = -speed[1]
 
-        screen.fill(black)
+        screen.fill(BLACK)
         screen.blit(ball, ball_rect)
         pygame.display.flip()

@@ -1,6 +1,6 @@
 import pygame
 from pygame.transform import rotate
-from pygame.sprite import Sprite
+from pygame.sprite import Sprite, Group
 from pygame.math import Vector2
 
 SIZE = (320, 240)
@@ -11,11 +11,11 @@ class Ant(Sprite):
 
     def __init__(self, size=(25, 25), speed=(2, 2)):
         # Call the parent class (Sprite) constructor
-        pygame.sprite.Sprite.__init__(self)
+        super(Ant, self).__init__()
 
         # Load an image of the ant
-        self.surface = pygame.image.load("ant_worker.png")
-        self.rect = self.surface.get_rect()
+        self.image = pygame.image.load("ant_worker.png")
+        self.rect = self.image.get_rect()
         self.rect.inflate(*size)
         self.vector = Vector2(speed)
 
@@ -34,7 +34,7 @@ class Ant(Sprite):
 
     def draw(self, surface):
         angle = self.vector.angle_to(Vector2(0, -1))
-        surface.blit(rotate(self.surface, angle), self.rect)
+        surface.blit(rotate(self.image, angle), self.rect)
 
 
 if __name__ == '__main__':
@@ -45,6 +45,8 @@ if __name__ == '__main__':
 
     ant = Ant()
 
+    colony = Group(ant)
+
     running = True
 
     while running:
@@ -53,8 +55,8 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT:
                 running = False
 
-        ant.update()
+        colony.update()
 
         screen.fill(WHITE)
-        ant.draw(screen)
+        colony.draw(screen)
         pygame.display.flip()
