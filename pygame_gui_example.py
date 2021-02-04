@@ -24,7 +24,8 @@ class Ant(Sprite):
         # Load an image of the ant
         self.image = pygame.image.load("ant_worker.png")
         self.rect = self.image.get_rect()
-        self.rect.inflate(*size)
+        self.rect.inflate_ip(*size)
+        self.rect.update(0, 0, *self.rect.size)
         self.vector = Vector2(speed)
 
     @property
@@ -41,12 +42,12 @@ class Ant(Sprite):
         self.vector *= 0.5
 
     def update(self):
-        ant.rect.move_ip(self.vector)
+        self.rect.move_ip(self.vector)
 
-        if ant.rect.left < 0 or ant.rect.right > MAP_SIZE[0]:
+        if self.rect.left < 0 or self.rect.right > MAP_SIZE[0]:
             self.vector = self.vector.reflect((1, 0))
 
-        if ant.rect.top < 0 or ant.rect.bottom > MAP_SIZE[1]:
+        if self.rect.top < 0 or self.rect.bottom > MAP_SIZE[1]:
             self.vector = self.vector.reflect((0, 1))
 
     def draw(self, surface):

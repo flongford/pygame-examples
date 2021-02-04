@@ -30,8 +30,6 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT:
                 running = False
 
-        ball_rect = ball.get_rect()
-
         ball_rect = ball_rect.move(speed)
 
         if ball_rect.left < 0 or ball_rect.right > width:
