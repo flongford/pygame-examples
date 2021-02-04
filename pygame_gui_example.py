@@ -111,6 +111,9 @@ if __name__ == '__main__':
         colony.update()
 
         screen.fill(WHITE)
-        colony.draw(screen)
+
+        for ant in colony.sprites():
+            ant.draw(screen)
+
         manager.draw_ui(screen)
-        pygame.display.update()
+        pygame.display.flip()

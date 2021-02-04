@@ -58,5 +58,8 @@ if __name__ == '__main__':
         colony.update()
 
         screen.fill(WHITE)
-        colony.draw(screen)
+
+        for ant in colony.sprites():
+            ant.draw(screen)
+
         pygame.display.flip()
